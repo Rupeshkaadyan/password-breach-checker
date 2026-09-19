@@ -177,6 +177,7 @@
     box-shadow:0 18px 52px rgba(124,92,255,.65), inset 0 0 26px rgba(255,255,255,.12);
     backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px)}
   .logo svg{width:34px;height:34px}
+  #matrix{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; mix-blend-mode:screen; opacity:.75}
   @media (prefers-reduced-motion: reduce){
     .topbar{animation:none}
   }
@@ -191,6 +192,7 @@
   <div class="blob b4"></div>
   <div class="grain"></div>
   <div class="stars"></div>
+  <canvas id="matrix" aria-hidden="true"></canvas>
 </div>
 <div class="wrap" data-page-node-id="sMc1LFO0UGuwSSq04vzyfQ">
 <header data-page-node-id="d6Ayu5OhcFanSOHQj6jhyn">
@@ -325,6 +327,46 @@ btn.addEventListener("click", async () => {
 });
 
 pw.addEventListener("keydown", (e) => { if (e.key === "Enter") btn.click(); });
+</script>
+<script>
+/* ===== Digital matrix rain background (hex digits, on-brand) ===== */
+(function () {
+  const c = document.getElementById("matrix");
+  if (!c) return;
+  const ctx = c.getContext("2d");
+  const chars = "0123456789ABCDEFabcdef".split("");
+  const fontSize = 15;
+  const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let cols = 0, drops = [], trails = [];
+  function resize() {
+    c.width = window.innerWidth; c.height = window.innerHeight;
+    cols = Math.floor(c.width / fontSize);
+    drops = []; trails = [];
+    for (let i = 0; i < cols; i++) { drops[i] = Math.random() * -60; trails[i] = []; }
+  }
+  function draw() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    ctx.font = fontSize + "px ui-monospace, Menlo, Consolas, monospace";
+    for (let i = 0; i < cols; i++) {
+      const x = i * fontSize;
+      const y = drops[i] * fontSize;
+      trails[i].unshift(chars[(Math.random() * chars.length) | 0]);
+      if (trails[i].length > 16) trails[i].pop();
+      for (let t = 0; t < trails[i].length; t++) {
+        const ty = y - t * fontSize;
+        if (ty < 0) continue;
+        const a = t === 0 ? 0.9 : Math.max(0, 0.5 - t * 0.045);
+        ctx.fillStyle = "rgba(130,235,255," + a + ")";
+        ctx.fillText(trails[i][t], x, ty);
+      }
+      if (y > c.height && Math.random() > 0.975) { drops[i] = Math.random() * -20; trails[i] = []; }
+      drops[i] += 0.7;
+    }
+  }
+  resize();
+  window.addEventListener("resize", resize);
+  if (!reduce) setInterval(draw, 55);
+})();
 </script>
 </body>
 </html>
