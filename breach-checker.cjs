@@ -50,9 +50,8 @@ async function checkPassword(password, opts) {
   const hash = sha1Fn(password).toUpperCase();
   const { prefix, suffix } = splitHash(hash);
 
-  const res = await fetchFn("https://api.pwnedpasswords.com/range/" + prefix, {
-    headers: { "Add-Padding": "true", "User-Agent": "breach-checker" },
-  });
+  // Simple GET (no custom headers => no CORS preflight => most reliable in every browser).
+  const res = await fetchFn("https://api.pwnedpasswords.com/range/" + prefix);
   if (!res.ok) throw new Error("HIBP request failed: " + res.status);
 
   const body = await res.text();
