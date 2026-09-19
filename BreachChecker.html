@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" data-page-node-id="097ZM1nOeU7F6P16LolSNo">
+<head data-page-node-id="qNc7wfd8aYhIRONMUzk3XG">
+<meta charset="UTF-8" data-page-node-id="W9NVrGkbBWXZ9qWEvurSxq" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="LazTkgte50h6yBYWVdoiuJ" />
+<title>Password Breach Checker — Is your password in a data breach?</title>
+<style>
+  :root{
+    --bg:#0f1117; --panel:#171a23; --panel2:#1d2130; --border:#2a2f3e;
+    --text:#e6e9ef; --muted:#9aa3b2; --accent:#5b8cff; --accent2:#28d18f;
+    --warn:#ffb454; --danger:#ff6b6b; --chip:#222838; --shadow:0 6px 24px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;padding:0 16px 64px}
+  .wrap{max-width:640px;margin:0 auto}
+  header{padding:40px 0 8px}
+  h1{font-size:24px;margin:0 0 6px;letter-spacing:-.4px}
+  .sub{color:var(--muted);margin:0}
+  .prove{display:inline-block;margin-top:10px;background:#16241d;border:1px solid #1f3b2f;color:var(--accent2);
+    padding:5px 12px;border-radius:999px;font-size:12.5px}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-top:18px}
+  .field{position:relative}
+  label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+  input[type=password],input[type=text]{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);
+    border-radius:10px;padding:13px 44px 13px 12px;font-size:16px}
+  input:focus{outline:none;border-color:var(--accent)}
+  .eye{position:absolute;right:10px;top:34px;background:none;border:0;color:var(--muted);cursor:pointer;font-size:14px;padding:4px}
+  .btn{margin-top:16px;width:100%;background:var(--accent);color:#fff;border:0;border-radius:10px;
+    padding:13px;font-size:15px;font-weight:600;cursor:pointer}
+  .btn:hover{filter:brightness(1.08)}
+  .btn:disabled{opacity:.6;cursor:default}
+  .err{color:var(--danger);font-size:13px;margin-top:10px;min-height:18px}
+  .result{display:none;margin-top:18px}
+  .banner{border-radius:12px;padding:16px;font-size:15px;font-weight:600}
+  .banner.bad{background:#2a1518;border:1px solid #4a2329;color:#ff9a9a}
+  .banner.good{background:#16241d;border:1px solid #1f3b2f;color:#9be8c4}
+  .detail{margin-top:10px;font-size:13.5px;color:var(--muted)}
+  .sent{margin-top:10px;font-size:12px;color:var(--muted);background:var(--panel2);
+    border:1px solid var(--border);border-radius:8px;padding:8px 10px;word-break:break-all}
+  .sent b{color:var(--accent2)}
+  .explain{margin-top:16px;font-size:13px;color:var(--muted);line-height:1.6}
+  .explain b{color:var(--text)}
+  .rec{margin-top:14px;font-size:13px;color:var(--muted)}
+  .rec a{color:var(--accent)}
+  .foot{color:var(--muted);font-size:12px;margin-top:22px;border-top:1px solid var(--border);padding-top:14px}
+</style>
+</head>
+<body data-page-node-id="kuXRwq7GVZB1DZM7HV3y3p">
+<div class="wrap" data-page-node-id="sMc1LFO0UGuwSSq04vzyfQ">
+<header data-page-node-id="d6Ayu5OhcFanSOHQj6jhyn">
+  <h1 data-page-node-id="GehSi6tp8ktduYhJ2Vikkc">Password Breach Checker</h1>
+  <p class="sub" data-page-node-id="T5mn5raH1HNebFW69uP8le">Find out if your password has appeared in a known data breach.</p>
+  <span class="prove" data-page-node-id="ytrGSKGna326fRq5sgEVKs">✓ Privacy-first: your password is hashed in your browser and never sent. Only the first 5 characters of its hash leave the device.</span>
+</header>
+
+<div class="card" data-page-node-id="UvpsoGaCyB8qNBEBZr4CCo">
+  <label for="pw" data-page-node-id="0mtByHfQDG49SBLzzHqDSs">Password to check</label>
+  <div class="field" data-page-node-id="nm1uPDWoPkMEK97vxWaRQt">
+    <input id="pw" type="password" autocomplete="off" placeholder="type your password" data-page-node-id="cvmG2Z22utCyPsYe4bKTuy" />
+    <button class="eye" id="eye" type="button" aria-label="show/hide" data-page-node-id="EsxJkaYtvVxmkqAujvRWbL">show</button>
+  </div>
+  <button class="btn" id="check" data-page-node-id="LGOSeBg6zS1xmioutNiANQ">Check my password</button>
+  <div class="err" id="err" data-page-node-id="ZhBPxgoFdjqXrmCDXeVK2u"></div>
+</div>
+
+<div class="result" id="result" data-page-node-id="AHaMBW7LjaIffYvb9DOwyI">
+  <div class="banner" id="banner" data-page-node-id="72n1xj7C7IBJqVcEe9I476"></div>
+  <div class="detail" id="detail" data-page-node-id="FTK0ikTGGRqbDPRn4NGBhs"></div>
+  <div class="sent" id="sent" data-page-node-id="H5pMp1HAnOpRoIUULUmOoX"></div>
+</div>
+
+<div class="card" data-page-node-id="uhsSF2R17pGkCIugsPjpSq">
+  <div class="explain" data-page-node-id="dNclJRDQmCOJo5w5T9qwkL">
+    <b data-page-node-id="8dtIL6jngdgvike0bsQWFd">How this stays private.</b> When you check a password, your browser computes its
+    SHA-1 hash, then sends <b data-page-node-id="u1hMlggbG6COWj4xDm6nUn">only the first 5 characters</b> of that hash to the
+    HaveIBeenPwned database. The server returns every hash that starts with those 5
+    characters; the match is done locally in your browser. Your password — and its full
+    hash — <b data-page-node-id="BOGj9F9J2K1ePyCMVF42tA">never leaves your device</b>. This is the standard "k-anonymity" method.
+  </div>
+  <div class="rec" data-page-node-id="mIlNW3dnrOh5CZgRyIrpTs">
+    This checks whether a password appears in <i data-page-node-id="dSjuZpovBYaB0TFzBjH852">known breach corpora</i>. It does not
+    measure password strength. Stay safe with a password manager:
+    <!-- Insert your affiliate IDs here, e.g. ?ref=YOURID -->
+    <a href="https://bitwarden.com" target="_blank" rel="noopener" data-page-node-id="wE4f34kkn9nXKt9yGp6WMF">Bitwarden</a> ·
+    <a href="https://1password.com" target="_blank" rel="noopener" data-page-node-id="lzj76BmKFKEAVrClH2emJv">1Password</a>.
+  </div>
+</div>
+
+<div class="foot" data-page-node-id="I8PPQy5GqHWtJH1CmzeWKk">
+  Data source: HaveIBeenPwned Pwned Passwords (free, public range API). This tool stores
+  nothing and makes no other network calls. Open the source, run it offline, verify it yourself.
+</div>
+</div>
+
+<script>
+/* ===== Verified engine (pure logic identical to breach-checker.js) ===== */
+function sha1Browser(str) {
+  return crypto.subtle.digest("SHA-1", new TextEncoder().encode(str)).then((buf) =>
+    Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("").toUpperCase()
+  );
+}
+function splitHash(sha1Upper) {
+  return { prefix: sha1Upper.slice(0, 5), suffix: sha1Upper.slice(5) };
+}
+function parseRangeResponse(body, suffix) {
+  const target = String(suffix).toUpperCase();
+  const lines = String(body).split(/\r?\n/);
+  for (const line of lines) {
+    const idx = line.indexOf(":");
+    if (idx === -1) continue;
+    const hash = line.slice(0, idx).trim().toUpperCase();
+    const count = parseInt(line.slice(idx + 1), 10);
+    if (hash === target) return isNaN(count) ? 0 : count;
+  }
+  return 0;
+}
+async function checkPassword(password, opts) {
+  opts = opts || {};
+  const sha1Fn = opts.sha1Fn;
+  const fetchFn = opts.fetchFn || fetch;
+  const hash = (await sha1Fn(password)).toUpperCase();
+  const { prefix, suffix } = splitHash(hash);
+  const res = await fetchFn("https://api.pwnedpasswords.com/range/" + prefix, {
+    headers: { "Add-Padding": "true", "User-Agent": "breach-checker" },
+  });
+  if (!res.ok) throw new Error("HIBP request failed: " + res.status);
+  const body = await res.text();
+  const count = parseRangeResponse(body, suffix);
+  return { hash, prefix, suffix, count, breached: count > 0 };
+}
+
+/* ===== UI ===== */
+const pw = document.getElementById("pw");
+const eye = document.getElementById("eye");
+const btn = document.getElementById("check");
+const errEl = document.getElementById("err");
+const resultEl = document.getElementById("result");
+const banner = document.getElementById("banner");
+const detail = document.getElementById("detail");
+const sent = document.getElementById("sent");
+
+eye.addEventListener("click", () => {
+  const show = pw.type === "password";
+  pw.type = show ? "text" : "password";
+  eye.textContent = show ? "hide" : "show";
+});
+
+function showError(msg) { errEl.textContent = "⚠ " + msg; resultEl.style.display = "none"; }
+
+btn.addEventListener("click", async () => {
+  const value = pw.value;
+  if (!value) { showError("Enter a password to check."); return; }
+  errEl.textContent = "";
+  btn.disabled = true; btn.textContent = "Checking…";
+  try {
+    const res = await checkPassword(value, { sha1Fn: sha1Browser, fetchFn: fetch });
+    resultEl.style.display = "block";
+    if (res.breached) {
+      banner.className = "banner bad";
+      banner.textContent = "⚠ This password was found in " + res.count.toLocaleString() + " known breach" + (res.count === 1 ? "" : "es") + ".";
+      detail.textContent = "That means it has been exposed and is likely in cracking dictionaries. Change it anywhere you use it, and use a unique password per site.";
+    } else {
+      banner.className = "banner good";
+      banner.textContent = "✓ Good news — this password was not found in any known breach corpus.";
+      detail.textContent = "Note: this only means it hasn't been leaked. It does not confirm the password is strong. Avoid common words and reuse.";
+    }
+    sent.innerHTML = "Privacy proof — only this was sent to HaveIBeenPwned: <b>" + res.prefix + "</b> (first 5 chars of your hash). Your password and full hash stayed on this device.";
+  } catch (e) {
+    showError("Could not reach the breach database. Check your connection and try again. (" + e.message + ")");
+  } finally {
+    btn.disabled = false; btn.textContent = "Check my password";
+  }
+});
+
+pw.addEventListener("keydown", (e) => { if (e.key === "Enter") btn.click(); });
+</script>
+</body>
+</html>
