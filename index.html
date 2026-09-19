@@ -4,6 +4,9 @@
 <meta charset="UTF-8" data-page-node-id="W9NVrGkbBWXZ9qWEvurSxq" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="LazTkgte50h6yBYWVdoiuJ" />
 <title>Password Breach Checker — Is your password in a data breach?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#070a12;
@@ -98,6 +101,50 @@
   .rec a:hover{color:#a5f3fc}
   .foot{color:var(--muted); font-size:12px; margin-top:22px; border-top:1px solid var(--panel-border);
     padding-top:14px; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);}
+  /* ===== beauty boost ===== */
+  body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .stars{position:absolute; inset:0; pointer-events:none; opacity:.6;
+    background-image:
+      radial-gradient(1.4px 1.4px at 12% 18%, rgba(255,255,255,.9), transparent),
+      radial-gradient(1.2px 1.2px at 28% 72%, rgba(255,255,255,.7), transparent),
+      radial-gradient(1.5px 1.5px at 47% 33%, rgba(255,255,255,.85), transparent),
+      radial-gradient(1.1px 1.1px at 63% 64%, rgba(255,255,255,.6), transparent),
+      radial-gradient(1.4px 1.4px at 78% 24%, rgba(255,255,255,.85), transparent),
+      radial-gradient(1.2px 1.2px at 88% 78%, rgba(255,255,255,.7), transparent),
+      radial-gradient(1.3px 1.3px at 35% 88%, rgba(255,255,255,.6), transparent),
+      radial-gradient(1.1px 1.1px at 70% 45%, rgba(255,255,255,.55), transparent);
+    background-repeat:repeat; background-size:340px 340px;
+    animation:twinkle 5s ease-in-out infinite alternate;}
+  @keyframes twinkle{from{opacity:.3} to{opacity:.75}}
+  header{animation:rise .7s cubic-bezier(.2,.7,.2,1) backwards}
+  .card{animation:rise .7s cubic-bezier(.2,.7,.2,1) backwards; animation-delay:.08s;
+    transition:transform .25s ease, border-color .25s ease;}
+  .foot{animation:rise .7s cubic-bezier(.2,.7,.2,1) backwards; animation-delay:.16s}
+  @keyframes rise{from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none}}
+  h1{background:linear-gradient(92deg,#c4b5fd,#67e8f9,#f0abfc,#c4b5fd); background-size:220% auto;
+    -webkit-background-clip:text; background-clip:text; color:transparent; animation:shimmer 7s linear infinite}
+  @keyframes shimmer{to{background-position:220% center}}
+  .card:hover{transform:translateY(-3px); border-color:rgba(255,255,255,.22)}
+  .btn{position:relative; overflow:hidden}
+  .btn::after{content:""; position:absolute; top:0; left:-60%; width:38%; height:100%;
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+    transform:skewX(-20deg); animation:sweep 3.8s ease-in-out infinite}
+  @keyframes sweep{0%{left:-60%} 55%{left:135%} 100%{left:135%}}
+  .spin{width:14px;height:14px;border:2px solid rgba(255,255,255,.45); border-top-color:#fff;
+    border-radius:50%; display:inline-block; vertical-align:-2px; margin-right:8px; animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .b-row{display:flex; gap:13px; align-items:flex-start}
+  .b-ico{flex:0 0 auto; width:26px; height:26px; margin-top:1px}
+  .b-ico svg{width:26px; height:26px; display:block}
+  .b-title{font-weight:700; font-size:15.5px; line-height:1.3}
+  .b-sub{font-weight:500; font-size:13px; opacity:.92; margin-top:4px; line-height:1.5}
+  .sent b{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; letter-spacing:1.5px; font-weight:700}
+  input:focus, .btn:focus-visible, .eye:focus-visible{outline:2px solid rgba(34,211,238,.5); outline-offset:2px}
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important}
+    .card:hover{transform:none}
+    .btn::after{display:none}
+  }
 </style>
 </head>
 <body data-page-node-id="kuXRwq7GVZB1DZM7HV3y3p">
@@ -106,6 +153,7 @@
   <div class="blob b2"></div>
   <div class="blob b3"></div>
   <div class="grain"></div>
+  <div class="stars"></div>
 </div>
 <div class="wrap" data-page-node-id="sMc1LFO0UGuwSSq04vzyfQ">
 <header data-page-node-id="d6Ayu5OhcFanSOHQj6jhyn">
@@ -199,6 +247,8 @@ const resultEl = document.getElementById("result");
 const banner = document.getElementById("banner");
 const detail = document.getElementById("detail");
 const sent = document.getElementById("sent");
+const ICON_BAD = '<span class="b-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fecdd3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span>';
+const ICON_GOOD = '<span class="b-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#bbf7d0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>';
 
 eye.addEventListener("click", () => {
   const show = pw.type === "password";
@@ -212,24 +262,27 @@ btn.addEventListener("click", async () => {
   const value = pw.value;
   if (!value) { showError("Enter a password to check."); return; }
   errEl.textContent = "";
-  btn.disabled = true; btn.textContent = "Checking…";
+  const label = btn.textContent;
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Checking…';
   try {
     const res = await checkPassword(value, { sha1Fn: sha1Browser, fetchFn: fetch });
     resultEl.style.display = "block";
     if (res.breached) {
       banner.className = "banner bad";
-      banner.textContent = "⚠ This password was found in " + res.count.toLocaleString() + " known breach" + (res.count === 1 ? "" : "es") + ".";
-      detail.textContent = "That means it has been exposed and is likely in cracking dictionaries. Change it anywhere you use it, and use a unique password per site.";
+      banner.innerHTML = '<div class="b-row">' + ICON_BAD +
+        '<div class="b-text"><div class="b-title">Found in ' + res.count.toLocaleString() + ' known breach' + (res.count === 1 ? '' : 'es') +
+        '</div><div class="b-sub">It has been exposed and is likely in cracking dictionaries. Change it everywhere you use it, and use a unique password per site.</div></div></div>';
     } else {
       banner.className = "banner good";
-      banner.textContent = "✓ Good news — this password was not found in any known breach corpus.";
-      detail.textContent = "Note: this only means it hasn't been leaked. It does not confirm the password is strong. Avoid common words and reuse.";
+      banner.innerHTML = '<div class="b-row">' + ICON_GOOD +
+        '<div class="b-text"><div class="b-title">Not found in any known breach</div><div class="b-sub">Good — this password has not appeared in any breach corpus. That does not confirm it is strong, so avoid common words and reuse.</div></div></div>';
     }
+    detail.textContent = "";
     sent.innerHTML = "Privacy proof — only this was sent to HaveIBeenPwned: <b>" + res.prefix + "</b> (first 5 chars of your hash). Your password and full hash stayed on this device.";
   } catch (e) {
     showError("Could not reach the breach database. Check your connection and try again. (" + e.message + ")");
   } finally {
-    btn.disabled = false; btn.textContent = "Check my password";
+    btn.disabled = false; btn.textContent = label;
   }
 });
 
